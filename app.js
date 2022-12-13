@@ -1,34 +1,47 @@
 const geocode = require('./utils/geocode');
 const forecast = require('./utils/forecast');
 
-// need to accept location via command line argument 
+// need to accept location via command line argument
 // console.log(process.argv)
-const address = process.argv[2]
+const address = process.argv[2];
 
 if (!address) {
-    return console.log('Please provide an address.')
+	return console.log('Please provide an address.');
 }
 
-
-geocode(address, (error, data) => {
+// refactor to use Object property shorthand
+geocode(address, (error, { latitude, longitude, location } = {}) => { // need to add default
 	if (error) {
 		return console.log(error);
 	}
-	// console.log('Error: ', error);
-	// console.log('Data: ', data);
-	// console.log("The lat/long of " + data.location + " is " + data.latitude + ", " + data.longitude);
-
-	forecast(data.latitude, data.longitude, (error, forecastData) => {
+	forecast(latitude, longitude, (error, forecastData) => {
 		if (error) {
 			return console.log(error);
 		}
-		console.log(data.location);
+		console.log(location);
 		console.log(forecastData);
-
-		// console.log('Error', error);
-		// console.log('Data', forecastData);
 	});
 });
+
+// geocode(address, (error, data) => {
+// 	if (error) {
+// 		return console.log(error);
+// 	}
+// 	// console.log('Error: ', error);
+// 	// console.log('Data: ', data);
+// 	// console.log("The lat/long of " + data.location + " is " + data.latitude + ", " + data.longitude);
+
+// 	forecast(data.latitude, data.longitude, (error, forecastData) => {
+// 		if (error) {
+// 			return console.log(error);
+// 		}
+// 		console.log(data.location);
+// 		console.log(forecastData);
+
+// 		// console.log('Error', error);
+// 		// console.log('Data', forecastData);
+// 	});
+// });
 
 /*
 // geocoding
