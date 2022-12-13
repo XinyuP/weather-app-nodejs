@@ -1,4 +1,6 @@
 const request = require('postman-request');
+const geocode = require('./utils/geocode')
+/*
 // geocoding
 // take an address and convert that into a lati/longi coordinate pair
 
@@ -13,7 +15,7 @@ request({ url: geocodeUrl, json: true }, (error, response) => {
     }
     else if (!response.body.features) {
     // else if (response.body.features.length === 0) {
-        console.log('Unable to convert location')
+        console.log('Unable to find location. Try another serach!')
     }
     else {
         const lat = response.body.features[0].center[1]
@@ -65,18 +67,13 @@ request({ url: url, json: true }, (error, response, body) => {
 
 // forecast: print: "It is currently 9 degrees out. It feels like 5 degrees out."
 
+*/
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+geocode('boston', (error, data) => {
+    console.log('Error: ', error)
+    console.log('Data: ', data)
+    console.log("The lat/long of " + data.location + " is " + data.latitude + ", " + data.longitude)
+})
