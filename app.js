@@ -1,34 +1,41 @@
 const request = require('postman-request');
-
-
 // geocoding
 // take an address and convert that into a lati/longi coordinate pair
 
 // Address -> Lat/Long -> Weather
 
 // Goal: print the lat/long for Los Angeles
-const geocodeUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places/Los%20Angeles.json?access_token=pk.eyJ1IjoieGlueXVwYW5nIiwiYSI6ImNrdTVuZmN0NjI2bnYyb3BtYWNyYThtaGIifQ.WK5_bWckr1Qup2wd3_49sA&limit=1';
+const geocodeUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places/beijing.json?access_token=pk.eyJ1IjoieGlueXVwYW5nIiwiYSI6ImNrdTVuZmN0NjI2bnYyb3BtYWNyYThtaGIifQ.WK5_bWckr1Qup2wd3_49sA&limit=1';
 
 request({ url: geocodeUrl, json: true }, (error, response) => {
+    if (error) {
+        console.log("Unable to connect location service!")
+    }
+    else if (!response.body.features) {
+    // else if (response.body.features.length === 0) {
+        console.log('Unable to convert location')
+    }
+    else {
+        const lat = response.body.features[0].center[1]
+        const long = response.body.features[0].center[0]
+        // console.log(response.body)
+        console.log("The lat/long of " + response.body.features[0].place_name + " is " + lat + ", " + long)
 
-    const lat = response.body.features[0].center[1]
-    const long = response.body.features[0].center[0]
+    }
 
-    console.log(response.body)
-    console.log("The lat/long of " + response.body.features[0].place_name + " is " + lat + ", " + long)
 })
 
 
+// use lat/long to fetch weather from weatherstack API
+const url = 'http://api.weatherstack.com/current?access_key=48ff11e343fef3921bb5cb441725bdf2&query=37.8267,%20-122.4233&units=f';
+    	//'http://api.weatherstack.com/current?access_key=48ff11e343fef3921bb5cb441725bdf2&query=';
 
 
-const url =
-	'http://api.weatherstack.com/current?access_key=48ff11e343fef3921bb5cb441725bdf2&query=37.8267,%20-122.4233&units=f';
 
-
-request({ url: url }, (error, response) => {
-    const data = JSON.parse(response.body)
-    console.log(data.current)
-});
+// // request({ url: url }, (error, response) => {
+// //     const data = JSON.parse(response.body)
+// //     console.log(data.current)
+// // });
 
 
 // request automatically parse the JSON for us
@@ -42,7 +49,16 @@ request({ url: url }, (error, response) => {
 request({ url: url, json: true }, (error, response, body) => {
     //console.log(response.body.current)
 
-    console.log(body.current.weather_descriptions[0] + ". It is currently " + body.current.temperature + " Fahrenheit out. It feels like " + body.current.feelslike +" Fahrenheit out.")
+    // error handling 
+    if (error) { // fails at a low level (like wifi connection)
+        console.log("Unable to connect weather service!")
+    }
+    else if (response.body.error) { // invalid input 
+        console.log('Unable to find location')
+    }
+    else { 
+      console.log(body.current.weather_descriptions[0] + ". It is currently " + body.current.temperature + " Fahrenheit out. It feels like " + body.current.feelslike +" Fahrenheit out.")
+    }
 
 });
 
