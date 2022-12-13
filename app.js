@@ -1,5 +1,15 @@
-const request = require('postman-request');
-const geocode = require('./utils/geocode')
+const geocode = require('./utils/geocode');
+const forecast = require('./utils/forecast');
+geocode('boston', (error, data) => {
+	console.log('Error: ', error);
+	console.log('Data: ', data);
+	console.log("The lat/long of " + data.location + " is " + data.latitude + ", " + data.longitude);
+});
+
+forecast(44.1545, -75.7088, (error, data) => {
+	console.log('Error', error);
+	console.log('Data', data);
+});
 /*
 // geocoding
 // take an address and convert that into a lati/longi coordinate pair
@@ -68,12 +78,3 @@ request({ url: url, json: true }, (error, response, body) => {
 // forecast: print: "It is currently 9 degrees out. It feels like 5 degrees out."
 
 */
-
-
-
-
-geocode('boston', (error, data) => {
-    console.log('Error: ', error)
-    console.log('Data: ', data)
-    console.log("The lat/long of " + data.location + " is " + data.latitude + ", " + data.longitude)
-})
