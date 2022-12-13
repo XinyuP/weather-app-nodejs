@@ -17,6 +17,39 @@ sinle-threaded
 event-driven
 
 
+This node application makes HTTP requests to another company's servers to get some tasks done 
+
+specify the URL we want to make request to 
+(API documentation)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
